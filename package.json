@@ -1,0 +1,20 @@
+{
+  "name": "block-templates-api",
+  "version": "1.0.0",
+  "description": "Middleware for the yuzu def pattern library",
+  "main": "index.js",
+  "directories": {},
+  "scripts": {},
+  "author": "Phil Whittaker",
+  "license": "MIT",
+  "devDependencies": { },
+  "dependencies": {
+    "block-templates-parse": "^1.2.8",
+    "ws": "^7.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hifi-phil/block-templates-api.git"
+  },
+  "homepage": "https://github.com/hifi-phil/block-templates-api.git#readme"
+}
