@@ -34,17 +34,28 @@ const init = function (req, res, next) {
 
         res.end();
     }
-    else if (paths[0] === 'get' && req.method === 'POST') {
+    else if (paths[0] === 'get' && req.method === 'GET') {
 
         req.on('end', function () {
 
-            var errors = [];
-            var response = JSON.parse(body);
+            var stateName = '/' + paths[1];
 
-            var stateName = '/' + response.stateName;
             var result = build.getData(templatePartials, stateName);
     
             res.write(JSON.stringify(result, null, 4));
+            res.end();
+        });
+
+    }
+    else if (paths[0] === 'getPreview' && req.method === 'GET') {
+
+        req.on('end', function () {
+
+            var stateName = '/' + paths[1];
+
+            var result = build.renderState(templatePartials, stateName);
+    
+            res.write(result);
             res.end();
         });
 
