@@ -1,15 +1,16 @@
 {
   "name": "block-templates-api",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Middleware for the yuzu def pattern library",
   "main": "index.js",
   "directories": {},
   "scripts": {},
   "author": "Phil Whittaker",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "block-templates-parse": "^1.2.19"
+  },
   "dependencies": {
-    "block-templates-parse": "^1.2.8",
     "ws": "^7.0.1"
   },
   "repository": {

@@ -47,6 +47,19 @@ const init = function (req, res, next) {
         });
 
     }
+    else if (paths[0] === 'getResolved' && req.method === 'GET') {
+
+        req.on('end', function () {
+
+            var stateName = '/' + paths[1];
+
+            var result = build.getData(templatePartials, stateName, true, []);
+    
+            res.write(JSON.stringify(result, null, 4));
+            res.end();
+        });
+
+    }
     else if (paths[0] === 'getPreview' && req.method === 'GET') {
 
         req.on('end', function () {
