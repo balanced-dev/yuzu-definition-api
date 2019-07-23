@@ -1,6 +1,6 @@
 {
   "name": "block-templates-api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Middleware for the yuzu def pattern library",
   "main": "index.js",
   "directories": {},

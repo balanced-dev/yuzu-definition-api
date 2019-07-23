@@ -135,16 +135,13 @@ const init = function (req, res, next) {
 
         req.on('end', function () {
 
-            var errors = [];
             var response = JSON.parse(body);
 
             var blockPath = path.join(templatePartials, response.path);
 
             build.register(templatePartials, $.blockHbsHelpers);
 
-            var renderedTemplate = build.save(templatePartials, layoutsDir, JSON.stringify(response.root, null, 4), blockPath, response.refs, errors);
-
-            build.savePreview(previews + response.previewPath, renderedTemplate);
+            build.save(templatePartials, JSON.stringify(response.root, null, 4), blockPath, response.refs);
 
         });
         res.end();
