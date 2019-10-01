@@ -1,5 +1,5 @@
 var path = require('path');
-var build = require('block-templates-parse').build;
+var build = require('yuzu-definition-core').build;
 var YuzuSocketComms = require('./yuzu-socket-comms');
 
 const init = function (req, res, next) {
