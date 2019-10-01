@@ -122,7 +122,7 @@ const init = function (req, res, next) {
 
             var blockPath = path.join(templatePartials, response.path);
 
-            build.register(templatePartials, $.blockHbsHelpers);
+            build.register(templatePartials, $.yuzuDefinitionHbsHelpers);
             var externals = build.setup(templatePartials);
 
             var renderedTemplate = build.renderPreview(JSON.stringify(response.root), response.refs, blockPath, externals, errors);
@@ -139,7 +139,7 @@ const init = function (req, res, next) {
 
             var blockPath = path.join(templatePartials, response.path);
 
-            build.register(templatePartials, $.blockHbsHelpers);
+            build.register(templatePartials, $.yuzuDefinitionHbsHelpers);
 
             build.save(templatePartials, JSON.stringify(response.root, null, 4), blockPath, response.refs);
 
