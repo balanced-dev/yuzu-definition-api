@@ -1,21 +1,21 @@
 {
-  "name": "block-templates-api",
+  "name": "yuzu-definition-api",
   "version": "1.0.4",
-  "description": "Middleware for the yuzu def pattern library",
+  "description": "Api layer for connecting gulp task runner to Yuzu pattern library",
   "main": "index.js",
   "directories": {},
   "scripts": {},
   "author": "Phil Whittaker",
   "license": "MIT",
   "devDependencies": {
-    "block-templates-parse": "^1.2.19"
+    "yuzu-definition-core": "^1.2.31"
   },
   "dependencies": {
     "ws": "^7.0.1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hifi-phil/block-templates-api.git"
+    "url": "git+https://github.com/balanced-dev/yuzu-definition-api.git"
   },
-  "homepage": "https://github.com/hifi-phil/block-templates-api.git#readme"
+  "homepage": "https://github.com/balanced-dev/yuzu-definition-api.git#readme"
 }
