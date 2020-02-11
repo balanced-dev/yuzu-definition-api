@@ -7,9 +7,9 @@ const init = function (req, res, next) {
     var paths = url.split('/');
     if(req.method == "OPTIONS") res.end();
 
-    var templatePartials = "./_dev/_templates/src/";
+    var templatePartials = "./_dev/_templates/";
     var layoutsDir = "./_dev/_templates/layouts/";
-    var previews = "./_dev/_templates/html/";
+    var previews = "./_dev/_client/html/";
 
     var body = '';
     req.on('data', function (data) {
