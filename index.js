@@ -7,9 +7,9 @@ const init = function (req, res, next) {
     var paths = url.split('/');
     if(req.method == "OPTIONS") res.end();
 
-    var templatePartials = "./_dev/_templates/";
-    var layoutsDir = "./_dev/_templates/layouts/";
-    var previews = "./_dev/_client/html/";
+    var allPartials = files.templates;
+    var allPartialsArr = [allPartials];
+    var previews = files.templateHTML;
 
     var body = '';
     req.on('data', function (data) {
@@ -40,7 +40,7 @@ const init = function (req, res, next) {
 
             var stateName = '/' + paths[1];
 
-            var result = build.getData(templatePartials, stateName);
+            var result = build.getData(allPartialsArr, stateName);
     
             res.write(JSON.stringify(result, null, 4));
             res.end();
@@ -53,7 +53,7 @@ const init = function (req, res, next) {
 
             var stateName = '/' + paths[1];
 
-            var result = build.getData(templatePartials, stateName, true, []);
+            var result = build.getData(allPartialsArr, stateName, true, []);
     
             res.write(JSON.stringify(result, null, 4));
             res.end();
@@ -66,7 +66,7 @@ const init = function (req, res, next) {
 
             var stateName = '/' + paths[1];
 
-            var result = build.renderState(templatePartials, stateName);
+            var result = build.renderState(allPartialsArr, stateName);
     
             res.write(result);
             res.end();
@@ -87,7 +87,7 @@ const init = function (req, res, next) {
     else if (paths[0] === 'getChildStates' && req.method === 'GET') {
 
         var state = '/' + paths[1];
-        var result = build.getChildStates(templatePartials, state);
+        var result = build.getChildStates(allPartialsArr, state);
 
         res.write(JSON.stringify(result, null, 4));
         res.end();
@@ -95,7 +95,7 @@ const init = function (req, res, next) {
     else if (paths[0] === 'getRefPaths' && req.method === 'GET') {
 
         var block = '/' + paths[1];
-        var result = build.getRefPaths(templatePartials, block);
+        var result = build.getRefPaths(allPartialsArr, block);
 
         res.write(JSON.stringify(result, null, 4));
         res.end();
@@ -108,7 +108,7 @@ const init = function (req, res, next) {
             blockPath = decodeURIComponent(paths[2]);
         }
 
-        var result = build.getEmpty(templatePartials, blockName, blockPath);
+        var result = build.getEmpty(allPartialsArr, blockName, blockPath);
 
         res.write(JSON.stringify(result, null, 4));
         res.end();
@@ -120,10 +120,10 @@ const init = function (req, res, next) {
             var errors = [];
             var response = JSON.parse(body);
 
-            var blockPath = path.join(templatePartials, response.path);
+            var blockPath = path.join(allPartials, response.path);
 
-            build.register(templatePartials, $.yuzuDefinitionHbsHelpers);
-            var externals = build.setup(templatePartials);
+            build.register(allPartialsArr, $.yuzuDefinitionHbsHelpers);
+            var externals = build.setup(allPartialsArr);
 
             var renderedTemplate = build.renderPreview(JSON.stringify(response.root), response.refs, blockPath, externals, errors);
 
@@ -137,11 +137,11 @@ const init = function (req, res, next) {
 
             var response = JSON.parse(body);
 
-            var blockPath = path.join(templatePartials, response.path);
+            var blockPath = path.join(allPartials, response.path);
 
-            build.register(templatePartials, $.yuzuDefinitionHbsHelpers);
+            build.register(allPartialsArr, $.yuzuDefinitionHbsHelpers);
 
-            build.save(templatePartials, JSON.stringify(response.root, null, 4), blockPath, response.refs);
+            build.save(allPartialsArr, JSON.stringify(response.root, null, 4), blockPath, response.refs);
 
         });
         res.end();
