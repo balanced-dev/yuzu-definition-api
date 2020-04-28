@@ -4,12 +4,18 @@ var YuzuSocketComms = require('./yuzu-socket-comms');
 
 const init = function (req, res, next) {
     var url = req.url.substring(1);
-    var paths = url.split('/');
+
+    // Remove query string params
+    url = url.split('?')[0];
+    
+    var urlPaths = url.split('/');
     if(req.method == "OPTIONS") res.end();
 
     var allPartials = files.templates;
     var allPartialsArr = [allPartials];
     var previews = files.templateHTML;
+
+    var imagesDir = paths.images.dest;    
 
     var body = '';
     req.on('data', function (data) {
@@ -22,11 +28,11 @@ const init = function (req, res, next) {
         }
     });
 
-    if (paths[0] === 'setActive' && req.method === 'GET') {
+    if (urlPaths[0] === 'setActive' && req.method === 'GET') {
 
-        var wsId = paths[1];
-        var blockPath = decodeURIComponent(paths[2]);
-        var isActive = paths[3];
+        var wsId = urlPaths[1];
+        var blockPath = decodeURIComponent(urlPaths[2]);
+        var isActive = urlPaths[3];
 
         if(wsId> 0) {
             YuzuSocketComms({ action: "setActive", data: { path: blockPath, isActive: isActive } }, wsId);
@@ -34,11 +40,11 @@ const init = function (req, res, next) {
 
         res.end();
     }
-    else if (paths[0] === 'get' && req.method === 'GET') {
+    else if (urlPaths[0] === 'get' && req.method === 'GET') {
 
         req.on('end', function () {
 
-            var stateName = '/' + paths[1];
+            var stateName = '/' + urlPaths[1];
 
             var result = build.getData(allPartialsArr, stateName);
     
@@ -47,11 +53,11 @@ const init = function (req, res, next) {
         });
 
     }
-    else if (paths[0] === 'getResolved' && req.method === 'GET') {
+    else if (urlPaths[0] === 'getResolved' && req.method === 'GET') {
 
         req.on('end', function () {
 
-            var stateName = '/' + paths[1];
+            var stateName = '/' + urlPaths[1];
 
             var result = build.getData(allPartialsArr, stateName, true, []);
     
@@ -60,11 +66,11 @@ const init = function (req, res, next) {
         });
 
     }
-    else if (paths[0] === 'getPreview' && req.method === 'GET') {
+    else if (urlPaths[0] === 'getPreview' && req.method === 'GET') {
 
         req.on('end', function () {
 
-            var stateName = '/' + paths[1];
+            var stateName = '/' + urlPaths[1];
 
             var result = build.renderState(allPartialsArr, stateName);
     
@@ -73,7 +79,7 @@ const init = function (req, res, next) {
         });
 
     }
-    else if (paths[0] === 'getPreviews' && req.method === 'GET') {
+    else if (urlPaths[0] === 'getPreviews' && req.method === 'GET') {
 
         req.on('end', function () {
 
@@ -84,28 +90,45 @@ const init = function (req, res, next) {
         });
 
     }
-    else if (paths[0] === 'getChildStates' && req.method === 'GET') {
+    else if (urlPaths[0] === 'getImages' && req.method === 'GET') {
 
-        var state = '/' + paths[1];
+        req.on('end', function () {
+
+            var result = build.getFilePaths(imagesDir);
+            var pathRoot = path.normalize(base.devRoot);
+
+            // Remove devRoot (e.g. '/_dev') and change '\\' -> '/' in paths
+            for (var i = 0, len = result.length; i < len; i++) {
+                result[i] = result[i].split(pathRoot)[1].split('\\').join('/')
+            }
+    
+            res.write(JSON.stringify(result, null, 4));
+            res.end();
+        });
+
+    }
+    else if (urlPaths[0] === 'getChildStates' && req.method === 'GET') {
+
+        var state = '/' + urlPaths[1];
         var result = build.getChildStates(allPartialsArr, state);
 
         res.write(JSON.stringify(result, null, 4));
         res.end();
     }
-    else if (paths[0] === 'getRefPaths' && req.method === 'GET') {
+    else if (urlPaths[0] === 'getRefPaths' && req.method === 'GET') {
 
-        var block = '/' + paths[1];
+        var block = '/' + urlPaths[1];
         var result = build.getRefPaths(allPartialsArr, block);
 
         res.write(JSON.stringify(result, null, 4));
         res.end();
     }
-    else if (paths[0] === 'getEmpty' && req.method === 'GET') {
+    else if (urlPaths[0] === 'getEmpty' && req.method === 'GET') {
 
-        var blockName = '/' + paths[1];
+        var blockName = '/' + urlPaths[1];
         var blockPath = '';
-        if(paths.length > 2) {
-            blockPath = decodeURIComponent(paths[2]);
+        if(urlPaths.length > 2) {
+            blockPath = decodeURIComponent(urlPaths[2]);
         }
 
         var result = build.getEmpty(allPartialsArr, blockName, blockPath);
@@ -113,7 +136,7 @@ const init = function (req, res, next) {
         res.write(JSON.stringify(result, null, 4));
         res.end();
     }
-    else if (paths[0] === 'preview' && req.method === 'POST') {
+    else if (urlPaths[0] === 'preview' && req.method === 'POST') {
 
         req.on('end', function () {
 
@@ -131,7 +154,7 @@ const init = function (req, res, next) {
         });
         res.end();
     }
-    else if (paths[0] === 'save' && req.method === 'POST') {
+    else if (urlPaths[0] === 'save' && req.method === 'POST') {
 
         req.on('end', function () {
 
