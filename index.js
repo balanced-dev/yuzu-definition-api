@@ -71,8 +71,9 @@ const init = function (req, res, next) {
         req.on('end', function () {
 
             var stateName = '/' + urlPaths[1];
+            var errors = [];
 
-            var result = build.renderState(allPartialsArr, stateName);
+            var result = build.renderState(allPartialsArr, stateName, errors);
     
             res.write(result);
             res.end();
