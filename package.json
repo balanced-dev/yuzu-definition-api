@@ -1,6 +1,6 @@
 {
   "name": "yuzu-definition-api",
-  "version": "1.1.2",
+  "version": "2.0.0-beta.0",
   "description": "Api layer for connecting gulp task runner to Yuzu pattern library",
   "main": "index.js",
   "directories": {},

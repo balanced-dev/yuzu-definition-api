@@ -1,6 +1,7 @@
 var path = require('path');
 var build = require('yuzu-definition-core').build;
 var YuzuSocketComms = require('./yuzu-socket-comms');
+var yuzuHelpers = require('yuzu-definition-hbs-helpers');
 
 const init = function (req, res, next) {
     var url = req.url.substring(1);
@@ -16,6 +17,11 @@ const init = function (req, res, next) {
     var previews = files.templateHTML;
 
     var imagesDir = paths.images.dest;    
+
+
+    res.set("Access-Control-Allow-Origin", "*"),
+    res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
+    res.set("Access-Control-Allow-Headers", "X-Requested-With, content-type, Authorization");
 
     var body = '';
     req.on('data', function (data) {
@@ -146,7 +152,7 @@ const init = function (req, res, next) {
 
             var blockPath = path.join(allPartials, response.path);
 
-            build.register(allPartialsArr, $.yuzuDefinitionHbsHelpers);
+            build.register(allPartialsArr, yuzuHelpers);
             var externals = build.setup(allPartialsArr);
 
             var renderedTemplate = build.renderPreview(JSON.stringify(response.root), response.refs, blockPath, externals, errors);
@@ -163,7 +169,7 @@ const init = function (req, res, next) {
 
             var blockPath = path.join(allPartials, response.path);
 
-            build.register(allPartialsArr, $.yuzuDefinitionHbsHelpers);
+            build.register(allPartialsArr, yuzuHelpers);
 
             build.save(allPartialsArr, JSON.stringify(response.root, null, 4), blockPath, response.refs);
 
