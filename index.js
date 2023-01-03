@@ -2,6 +2,7 @@ var path = require('path');
 var build = require('yuzu-definition-core').build;
 var YuzuSocketComms = require('./yuzu-socket-comms');
 var yuzuHelpers = require('yuzu-definition-hbs-helpers');
+const options = require(path.join(process.cwd(), 'yuzu.config.js'));
 
 const init = function (req, res, next) {
     var url = req.url.substring(1);
@@ -12,11 +13,11 @@ const init = function (req, res, next) {
     var urlPaths = url.split('/');
     if(req.method == "OPTIONS") res.end();
 
-    var allPartials = files.templates;
-    var allPartialsArr = [allPartials];
-    var previews = files.templateHTML;
+    var allPartials =  options.api.files.templates[0];
+    var allPartialsArr = options.api.files.templates;
+    var previews = options.api.files.templateHTML;
 
-    var imagesDir = paths.images.dest;    
+    var imagesDir =  options.api.paths.images.dest;  
 
 
     res.set("Access-Control-Allow-Origin", "*"),
