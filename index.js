@@ -4,6 +4,14 @@ var YuzuSocketComms = require('./yuzu-socket-comms');
 var yuzuHelpers = require('yuzu-definition-hbs-helpers');
 const options = require(path.join(process.cwd(), 'yuzu.config.js'));
 
+if(options.plugins) {
+    options.plugins.forEach(plugin => {
+        if(plugin.initForYuzuApi) {
+          plugin.initForYuzuApi(options);
+        }
+      });
+}
+
 const init = function (req, res, next) {
     var url = req.url.substring(1);
 
